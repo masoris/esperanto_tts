@@ -48,6 +48,9 @@
             // alert(response);
             jsonObj = JSON.parse(response);
             document.getElementById('pl').value = jsonObj.pol_txt;
+            if (jsonObj.esp_txt != null){
+            document.getElementById('eo').value = jsonObj.esp_txt;
+          }
             audio = new Audio();
             nowInMillis = new Date().getTime();
             audio.src = './output.mp3?'+nowInMillis;
