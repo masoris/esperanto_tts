@@ -50,6 +50,7 @@ def esp_to_polish(esp_txt):
             esp_words[i] = exception_esp[esp_word]
     esp_txt = " ".join(esp_words)
 
+    #특수문자로 공백으로 분리한 esp_txt
     org_esp_txt = esp_txt
 
     # esperanto입력 문장을 음절 단위로 분해한다.
@@ -129,7 +130,7 @@ def esp_to_polish(esp_txt):
         # if esp_word in exception.overrides:
         #     pol_words[i] = exception.overrides[esp_word]
     pol_txt = " ".join(pol_words)
-    return pol_txt
+    return [org_esp_txt, pol_txt]
 
 if __name__ == "__main__":
     if (len(sys.argv) < 4):
@@ -141,10 +142,10 @@ if __name__ == "__main__":
         esp_txt = sys.argv[2]
         if voicename == 'ludoviko':
             googletts.speak(esp_txt, voicename, "output.mp3")
-            pol_txt = esp_to_polish(esp_txt)
+            [esp_txt, pol_txt] = esp_to_polish(esp_txt)
             print("esp_txt=%s\npol_txt=%s" % (esp_txt, pol_txt))
         else:
-            pol_txt = esp_to_polish(esp_txt)
+            [esp_txt, pol_txt] = esp_to_polish(esp_txt)
             print("esp_txt=%s\npol_txt=%s" % (esp_txt, pol_txt))
             googletts.speak(pol_txt, voicename, "output.mp3")
 

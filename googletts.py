@@ -77,5 +77,6 @@ def google_tts_polish(inputtxt, voicename, output_mp3):
     with open(output_mp3, "wb") as out:
         out.write(response.audio_content)
 
+os.remove("output.mp3")
 google_tts_polish("Saluton mi amas vin", "male1", "output.mp3")
 # 파일 재생

@@ -23,12 +23,31 @@ def speak():
 
     lines = output.stdout.decode('utf-8').split('\n')
     print (lines)
+    esp_txt = None
     for line in lines:
         if line.find("pol_txt=") == 0:
             pol_txt = line[8:]
         if line.find("esp_txt=") == 0:
             esp_txt = line[8:]
-    result = {'resp': 'OK', 'lang':lang, 'voicename':voicename, 'textdata':textdata, 'pol_txt':pol_txt}
+
+    if esp_txt is not None:
+        result = {'resp': 'OK', 'lang':lang, 'voicename':voicename, 'textdata':textdata, 'pol_txt':pol_txt, 'esp_txt': esp_txt}
+    else:
+        result = {'resp': 'OK', 'lang':lang, 'voicename':voicename, 'textdata':textdata, 'pol_txt':pol_txt}
+    resp = make_response(jsonify(result))
+    return resp
+
+@app.route('/tts/remember.api', methods=['POST'])
+def remember():
+    eo_txt = request.json['eo_txt']
+    pl_txt = request.json['pl_txt']
+    voice_name = request.json['voice_name']
+    
+    cmd = ["python3", "remember.py", eo_txt , pl_txt, voice_name]
+    output = subprocess.run(cmd, stdout=subprocess.PIPE) 
+    print(output)
+    
+    result = {'resp': 'OK', 'message':'remeber.py sucessfully'}
     resp = make_response(jsonify(result))
     return resp
 
