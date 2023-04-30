@@ -34,6 +34,8 @@ def vocalwave_tts_esperanto(esp_txt, voicename, output_mp3):
         print(f"Failed to fetch {url}")
 
 def google_tts_polish(inputtxt, voicename, output_mp3):
+    # 폴란드어 음성에서 ~를 틸다라고 발음하지 않도록 막는다.
+    inputtxt = inputtxt.replace("~", "")
     # 인증 정보 설정
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "my-project-tts-383606-c4e8939e2840.json"
 
@@ -67,7 +69,9 @@ def google_tts_polish(inputtxt, voicename, output_mp3):
         # ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL # 음성 성별
     )
     audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
-
+    if os.path.exists("./output.mp3"):
+        os.remove("output.mp3")
+    
     # 음성 합성 요청 보내기
     response = client.synthesize_speech(
         input=synthesis_input, voice=voice_conf, audio_config=audio_config
@@ -77,6 +81,5 @@ def google_tts_polish(inputtxt, voicename, output_mp3):
     with open(output_mp3, "wb") as out:
         out.write(response.audio_content)
 
-os.remove("output.mp3")
-google_tts_polish("Saluton mi amas vin", "male1", "output.mp3")
+# google_tts_polish("Saluton mi amas vin", "male1", "output.mp3")
 # 파일 재생

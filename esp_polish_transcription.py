@@ -1,16 +1,20 @@
-import googletts, sys, csv
+import googletts, sys, csv, re
 from playsound import playsound
 
 exception_esp = {}
 with open('exception_esp.tsv', newline='', encoding='utf-8') as csvfile:
     reader = csv.reader(csvfile, delimiter='\t')
     for row in reader:
+        # if len(row) < 2:
+        #     continue
         exception_esp[row[0]] = row[1]
 
 exception_pol = {}
 with open('exception_pol.tsv', newline='', encoding='utf-8') as csvfile:
     reader = csv.reader(csvfile, delimiter='\t')
     for row in reader:
+        # if len(row) < 2:
+        #     continue
         exception_pol[row[0]] = row[1]
 
 
@@ -35,8 +39,14 @@ def normalize_esp_text(esp_txt):
     esp_txt = esp_txt.replace(",", " ,")
     esp_txt = esp_txt.replace(".", " .")
     esp_txt = esp_txt.replace("?", " ?")
-    
+    # esp_txt = esp_txt.replace("~", " ")
+    esp_txt = esp_txt.replace(":", " :")
+    esp_txt = esp_txt.replace(";", " ;")
+    esp_txt = esp_txt.replace("(", " (")
+    esp_txt = esp_txt.replace(")", " )")
+
     esp_txt = esp_txt.strip()
+    esp_txt = re.sub('\s+', ' ', esp_txt)
 
     return esp_txt
 
@@ -130,6 +140,30 @@ def esp_to_polish(esp_txt):
         # if esp_word in exception.overrides:
         #     pol_words[i] = exception.overrides[esp_word]
     pol_txt = " ".join(pol_words)
+
+    org_esp_txt = org_esp_txt.replace(" !", "!")
+    org_esp_txt = org_esp_txt.replace(" ,", ",")
+    org_esp_txt = org_esp_txt.replace(" .", ".")
+    org_esp_txt = org_esp_txt.replace(" ?", "?")
+    # org_esp_txt = org_esp_txt.replace(" ~", "~")
+    org_esp_txt = org_esp_txt.replace(" :", ":")
+    org_esp_txt = org_esp_txt.replace(" ;", ";")
+    org_esp_txt = org_esp_txt.replace(" (", "(")
+    org_esp_txt = org_esp_txt.replace(" )", ")")
+
+    pol_txt = pol_txt.replace(" !", "!")
+    pol_txt = pol_txt.replace(" ,", ",")
+    pol_txt = pol_txt.replace(" .", ".")
+    pol_txt = pol_txt.replace(" ?", "?")
+    # pol_txt = pol_txt.replace(" ~", "~")
+    pol_txt = pol_txt.replace(" :", ":")
+    pol_txt = pol_txt.replace(" ;", ";")
+    pol_txt = pol_txt.replace(" (", "(")
+    pol_txt = pol_txt.replace(" )", ")")
+
+    org_esp_txt = org_esp_txt.strip()
+    pol_txt = pol_txt.strip()
+    
     return [org_esp_txt, pol_txt]
 
 if __name__ == "__main__":
