@@ -28,6 +28,7 @@
     <br><br>
     <button onclick="speak('pl')">Speak</button>
     <button onclick="remember()">Remember</button>
+    <button onclick="remember_all()">Remember All</button>
     <!-- <br><br> -->
     <!-- <button onclick="store()">Store</button> -->
     <br><br>
@@ -62,6 +63,23 @@
         // call text-to-speech API with voice and text
         // set audio file URL as download link href
         // document.getElementById("download-link").href = "audio-file-url";
+      }
+
+      function remember_all() {
+        const eo_txt = document.getElementById("eo").value;
+        const pl_txt = document.getElementById("pl").value;
+        jsonObj = {eo_txt:eo_txt, pl_txt:pl_txt};
+        strdata = JSON.stringify(jsonObj);
+        // alert(strdata);
+        postAjaxRequest('/tts/remember_all.api', strdata, function(response){
+            //여기에 speak 결과를 처리한다
+            // alert(response);
+            jsonObj = JSON.parse(response);
+            // document.getElementById('pl').value = jsonObj.pol_txt;
+            // const audio = new Audio();
+            // audio.src = './output.mp3';
+            // audio.play();
+        }, function(errcode){});
       }
 
       function remember() {

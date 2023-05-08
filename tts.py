@@ -103,7 +103,7 @@ def remember():
         fileobj.close()
 
     # 2. output.mp3를 ./sound/(voice_name)/(esp_txt).mp3 로 파일 mv/overwrite하기
-    mp3_file = "../html/sounds/"+voice_name+'/'+esp_txt+'.mp3'
+    mp3_file = "../memlingo/sounds/"+voice_name+'/'+esp_txt+'.mp3'
     if os.path.exists("./output.mp3"):
         shutil.move("./output.mp3", mp3_file)
 
@@ -111,6 +111,36 @@ def remember():
     result = {'resp': 'OK', 'message':'remeber.py sucessfully'}
     resp = make_response(jsonify(result))
     return resp
+
+
+@app.route('/tts/remember_all.api', methods=['POST'])
+def remember_all():
+    esp_txt = request.json['eo_txt']
+    pol_txt = request.json['pl_txt']
+
+    esp_txt = esp_txt.strip()
+    pol_txt = pol_txt.strip()
+
+    voices = ["male1", "male2", "male3", "female1", "female2", "female3", "ludoviko"]
+    for voice in voices:
+        if voice == "ludoviko":
+            cmd = ["python3", "esp_polish_transcription.py", "-e" ,"%s" % esp_txt, "%s" % voice]
+        else:
+            cmd = ["python3", "esp_polish_transcription.py", "-p" ,"%s" % esp_txt, "%s" % voice]
+        output = subprocess.run(cmd, stdout=subprocess.PIPE) 
+
+        # 2. output.mp3를 ./sound/(voice)/(esp_txt).mp3 로 파일 mv/overwrite하기
+        mp3_file = "../memlingo/sounds/"+voice+'/'+esp_txt+'.mp3'
+        if os.path.exists("./output.mp3"):
+            print("mp3_file:"+mp3_file)
+            shutil.move("./output.mp3", mp3_file)
+
+    
+    result = {'resp': 'OK', 'message':'remeber_all.api sucessfully'}
+    resp = make_response(jsonify(result))
+    return resp
+
+
 
 app.run(debug=True, host='192.168.117.129', port=5001)
 
