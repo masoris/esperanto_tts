@@ -1,109 +1,115 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Voice Input</title>
-    <script src="./ajax.js?version3.0"></script>
-  </head>
-  <body>
-    <h1>Voice Input</h1>
-    <label for="voice">Select a voice:</label>
-    <select id="voice" name="voice">
-      <option value="male1">Male 1</option>
-      <option value="male2">Male 2</option>
-      <option value="male3">Male 3</option>
-      <option value="female1">Female 1</option>
-      <option value="female2">Female 2</option>
-      <option value="female3">Female 3</option>
-      <option value="ludoviko">ludoviko</option>
-    </select>
-    <br><br>
-    <label for="eo">Eo:</label>
-    <textarea id="eo" name="eo" rows="3" cols="30"></textarea>
-    <br><br>
-    <button onclick="speak('eo')">Speak</button>
-    <br><br>
-    <label for="pl">Pl:</label>
-    <textarea id="pl" name="pl" rows="3" cols="30"></textarea>
-    <br><br>
-    <button onclick="speak('pl')">Speak</button>
-    <button onclick="remember()">Remember</button>
-    <button onclick="remember_all()">Remember All</button>
-    <!-- <br><br> -->
-    <!-- <button onclick="store()">Store</button> -->
-    <br><br>
-    <a id="download-link" href="./output.mp3" download>Download Audio</a>
 
-    <script>
-      document.getElementById("voice").onchange = function(){
-        // alert(document.getElementById("voice").value);
-      }
-      function speak(field) {
-        voice = document.getElementById("voice").value;
-        text = document.getElementById(field).value;
-        jsonObj = {lang: field, voicename: voice, textdata: text};
-        strdata = JSON.stringify(jsonObj);
-        // alert(strdata);
-        postAjaxRequest('/tts/speak.api', strdata, function(response){
-            //여기에 speak 결과를 처리한다
-            // alert(response);
-            jsonObj = JSON.parse(response);
-            document.getElementById('pl').value = jsonObj.pol_txt;
-            if (jsonObj.esp_txt != null){
-            document.getElementById('eo').value = jsonObj.esp_txt;
-          }
-            audio = new Audio();
-            nowInMillis = new Date().getTime();
-            audio.src = './output.mp3?'+nowInMillis;
-            audio.play();
-        }, function(errcode){});
-        // alert(strdata);
-       
-        
-        // call text-to-speech API with voice and text
-        // set audio file URL as download link href
-        // document.getElementById("download-link").href = "audio-file-url";
-      }
+<head>
+  <meta charset="utf-8">
+  <title>Voice Input</title>
+  <script src="./ajax.js?version3.0"></script>
+</head>
 
-      function remember_all() {
-        const eo_txt = document.getElementById("eo").value;
-        const pl_txt = document.getElementById("pl").value;
-        jsonObj = {eo_txt:eo_txt, pl_txt:pl_txt};
-        strdata = JSON.stringify(jsonObj);
-        // alert(strdata);
-        postAjaxRequest('/tts/remember_all.api', strdata, function(response){
-            //여기에 speak 결과를 처리한다
-            // alert(response);
-            jsonObj = JSON.parse(response);
-            // document.getElementById('pl').value = jsonObj.pol_txt;
-            // const audio = new Audio();
-            // audio.src = './output.mp3';
-            // audio.play();
-        }, function(errcode){});
-      }
+<body>
+  <h1>Voice Input</h1>
+  <label for="voice">Select a voice:</label>
+  <select id="voice" name="voice">
+    <option value="male1">Male 1</option>
+    <option value="male2">Male 2</option>
+    <option value="male3">Male 3</option>
+    <option value="female1">Female 1</option>
+    <option value="female2">Female 2</option>
+    <option value="female3">Female 3</option>
+    <option value="ludoviko">ludoviko</option>
+  </select>
+  <br><br>
+  <label for="eo">Eo:</label>
+  <textarea id="eo" name="eo" rows="3" cols="30"></textarea>
+  <br><br>
+  <button onclick="speak('eo')">Speak</button>
+  <br><br>
+  <label for="pl">Pl:</label>
+  <textarea id="pl" name="pl" rows="3" cols="30"></textarea>
+  <br><br>
+  <button onclick="speak('pl')">Speak</button>
+  <button onclick="remember()">Remember</button>
+  <button onclick="remember_all()">Remember All</button>
+  <!-- <br><br> -->
+  <!-- <button onclick="store()">Store</button> -->
+  <br><br>
+  <a id="download-link" href="./output.mp3" download>Download Audio</a>
 
-      function remember() {
-        const eo_txt = document.getElementById("eo").value;
-        const pl_txt = document.getElementById("pl").value;
-        const voice = document.getElementById("voice").value;
-        jsonObj = {eo_txt:eo_txt, pl_txt:pl_txt, voice_name:voice};
-        strdata = JSON.stringify(jsonObj);
-        // alert(strdata);
-        postAjaxRequest('/tts/remember.api', strdata, function(response){
-            //여기에 speak 결과를 처리한다
-            // alert(response);
-            jsonObj = JSON.parse(response);
-            // document.getElementById('pl').value = jsonObj.pol_txt;
-            // const audio = new Audio();
-            // audio.src = './output.mp3';
-            // audio.play();
-        }, function(errcode){});
-      }
+  ą ć ę ł ń ó ś ź ż
+
+
+  <script>
+    document.getElementById("voice").onchange = function () {
+      // alert(document.getElementById("voice").value);
+    }
+    function speak(field) {
+      voice = document.getElementById("voice").value;
+      text = document.getElementById(field).value;
+      jsonObj = { lang: field, voicename: voice, textdata: text };
+      strdata = JSON.stringify(jsonObj);
+      // alert(strdata);
+      postAjaxRequest('/tts/speak.api', strdata, function (response) {
+        //여기에 speak 결과를 처리한다
+        // alert(response);
+        jsonObj = JSON.parse(response);
+        document.getElementById('pl').value = jsonObj.pol_txt;
+        if (jsonObj.esp_txt != null) {
+          document.getElementById('eo').value = jsonObj.esp_txt;
+        }
+        audio = new Audio();
+        nowInMillis = new Date().getTime();
+        audio.src = './output.mp3?' + nowInMillis;
+        audio.play();
+      }, function (errcode) { });
+      // alert(strdata);
+
+
+      // call text-to-speech API with voice and text
+      // set audio file URL as download link href
+      // document.getElementById("download-link").href = "audio-file-url";
+    }
+
+    function remember_all() {
+      const eo_txt = document.getElementById("eo").value;
+      const pl_txt = document.getElementById("pl").value;
+      jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt };
+      strdata = JSON.stringify(jsonObj);
+      // alert(strdata);
+      postAjaxRequest('/tts/remember_all.api', strdata, function (response) {
+        //여기에 speak 결과를 처리한다
+        // alert(response);
+        jsonObj = JSON.parse(response);
+        // document.getElementById('pl').value = jsonObj.pol_txt;
+        // const audio = new Audio();
+        // audio.src = './output.mp3';
+        // audio.play();
+      }, function (errcode) { });
+    }
+
+    function remember() {
+      const eo_txt = document.getElementById("eo").value;
+      const pl_txt = document.getElementById("pl").value;
+      const voice = document.getElementById("voice").value;
+      jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, voice_name: voice };
+      strdata = JSON.stringify(jsonObj);
+      // alert(strdata);
+      postAjaxRequest('/tts/remember.api', strdata, function (response) {
+        //여기에 speak 결과를 처리한다
+        // alert(response);
+        jsonObj = JSON.parse(response);
+        // document.getElementById('pl').value = jsonObj.pol_txt;
+        // const audio = new Audio();
+        // audio.src = './output.mp3';
+        // audio.play();
+      }, function (errcode) { });
+    }
 
       // function store() {
       //   // send Eo and Pl text to server
       //   alert("Eo and Pl text stored!");
       // }
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
