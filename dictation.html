@@ -31,8 +31,7 @@
   <button onclick="speak('pl')">Speak</button>
   <button onclick="remember()">Remember</button>
   <button onclick="remember_all()">Remember All</button>
-  <!-- <br><br> -->
-  <!-- <button onclick="store()">Store</button> -->
+  <button onclick="remove_all()">Remove All</button>
   <br><br>
   <a id="download-link" href="./output.mp3" download>Download Audio</a>
 
@@ -41,17 +40,13 @@
 
   <script>
     document.getElementById("voice").onchange = function () {
-      // alert(document.getElementById("voice").value);
     }
     function speak(field) {
       voice = document.getElementById("voice").value;
       text = document.getElementById(field).value;
       jsonObj = { lang: field, voicename: voice, textdata: text };
       strdata = JSON.stringify(jsonObj);
-      // alert(strdata);
       postAjaxRequest('/tts/speak.api', strdata, function (response) {
-        //여기에 speak 결과를 처리한다
-        // alert(response);
         jsonObj = JSON.parse(response);
         document.getElementById('pl').value = jsonObj.pol_txt;
         if (jsonObj.esp_txt != null) {
@@ -62,12 +57,6 @@
         audio.src = './output.mp3?' + nowInMillis;
         audio.play();
       }, function (errcode) { });
-      // alert(strdata);
-
-
-      // call text-to-speech API with voice and text
-      // set audio file URL as download link href
-      // document.getElementById("download-link").href = "audio-file-url";
     }
 
     function remember_all() {
@@ -75,15 +64,18 @@
       const pl_txt = document.getElementById("pl").value;
       jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt };
       strdata = JSON.stringify(jsonObj);
-      // alert(strdata);
       postAjaxRequest('/tts/remember_all.api', strdata, function (response) {
-        //여기에 speak 결과를 처리한다
-        // alert(response);
         jsonObj = JSON.parse(response);
-        // document.getElementById('pl').value = jsonObj.pol_txt;
-        // const audio = new Audio();
-        // audio.src = './output.mp3';
-        // audio.play();
+      }, function (errcode) { });
+    }
+
+    function remove_all() {
+      const eo_txt = document.getElementById("eo").value;
+      const pl_txt = document.getElementById("pl").value;
+      jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt };
+      strdata = JSON.stringify(jsonObj);
+      postAjaxRequest('/tts/remove_all.api', strdata, function (response) {
+        jsonObj = JSON.parse(response);
       }, function (errcode) { });
     }
 
@@ -93,22 +85,10 @@
       const voice = document.getElementById("voice").value;
       jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, voice_name: voice };
       strdata = JSON.stringify(jsonObj);
-      // alert(strdata);
       postAjaxRequest('/tts/remember.api', strdata, function (response) {
-        //여기에 speak 결과를 처리한다
-        // alert(response);
         jsonObj = JSON.parse(response);
-        // document.getElementById('pl').value = jsonObj.pol_txt;
-        // const audio = new Audio();
-        // audio.src = './output.mp3';
-        // audio.play();
       }, function (errcode) { });
     }
-
-      // function store() {
-      //   // send Eo and Pl text to server
-      //   alert("Eo and Pl text stored!");
-      // }
   </script>
 </body>
 

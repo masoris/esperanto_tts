@@ -141,6 +141,27 @@ def remember_all():
     return resp
 
 
+@app.route('/tts/remove_all.api', methods=['POST'])
+def remove_all():
+    esp_txt = request.json['eo_txt']
+    pol_txt = request.json['pl_txt']
+
+    esp_txt = esp_txt.strip()
+    pol_txt = pol_txt.strip()
+
+    voices = ["male1", "male2", "male3", "female1", "female2", "female3", "ludoviko"]
+    for voice in voices:
+        
+        # ./sound/(voice)/(esp_txt).mp3의 파일을 삭제하기
+        mp3_file = "../memlingo/sounds/"+voice+'/'+esp_txt+'.mp3'
+        if os.path.exists(mp3_file):
+            os.remove(mp3_file)
+    
+    result = {'resp': 'OK', 'message':'remove_all.api sucessfully'}
+    resp = make_response(jsonify(result))
+    return resp
+
+
 
 app.run(debug=True, host='192.168.117.129', port=5001)
 
