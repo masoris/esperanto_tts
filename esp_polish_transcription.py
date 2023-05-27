@@ -1,5 +1,8 @@
-import googletts, sys, csv, re
-from playsound import playsound
+import googletts
+import sys
+import csv
+import re
+# from playsound import playsound
 
 exception_esp = {}
 with open('exception_esp.tsv', newline='', encoding='utf-8') as csvfile:
@@ -50,6 +53,7 @@ def normalize_esp_text(esp_txt):
 
     return esp_txt
 
+
 def esp_to_polish(esp_txt):
     esp_txt = normalize_esp_text(esp_txt)
 
@@ -60,7 +64,7 @@ def esp_to_polish(esp_txt):
             esp_words[i] = exception_esp[esp_word]
     esp_txt = " ".join(esp_words)
 
-    #특수문자로 공백으로 분리한 esp_txt
+    # 특수문자로 공백으로 분리한 esp_txt
     org_esp_txt = esp_txt
 
     # esperanto입력 문장을 음절 단위로 분해한다.
@@ -80,7 +84,7 @@ def esp_to_polish(esp_txt):
     for word in words:
         if len(word) >= 2:
             if word[-2] == '-':
-                word = word[0:-2] + word [-1:]
+                word = word[0:-2] + word[-1:]
                 words2.append(word)
                 continue
         if len(word) >= 1:
@@ -91,8 +95,7 @@ def esp_to_polish(esp_txt):
     esp_txt = " ".join(words2)
     # return esp_txt
 
-
-    # 폴란드어 문자 변형 규칙을 반영한다. 
+    # 폴란드어 문자 변형 규칙을 반영한다.
     esp_txt = esp_txt.replace('c', 'ts')
     esp_txt = esp_txt.replace('ĉ', 'cz')
     esp_txt = esp_txt.replace('ĝ', 'dż')
@@ -103,7 +106,6 @@ def esp_to_polish(esp_txt):
     esp_txt = esp_txt.replace('ŝ', 'sz')
     esp_txt = esp_txt.replace('ŭ', 'ł')
     esp_txt = esp_txt.replace('v', 'w')
-    
 
     # 에스페란토 억양을 반영한다.
     words = esp_txt.split(" ")
@@ -119,7 +121,7 @@ def esp_to_polish(esp_txt):
         word = "-".join(sylables)
         words2.append(word)
     esp_txt = " ".join(words2)
-    
+
     words = esp_txt.split(' ')
     words2 = []
     for word in words:
@@ -129,7 +131,7 @@ def esp_to_polish(esp_txt):
     esp_txt = " ".join(words2)
     # esp_txt = "-".join(words[0:-1]) + words[-1]
 
-    # 여기에서 온 갓 종류의 예외 처리를 수행한다 
+    # 여기에서 온 갓 종류의 예외 처리를 수행한다
     # ok > ohk 등으로 바꾼다
     esp_words = org_esp_txt.split(" ")
     pol_words = esp_txt.split(" ")
@@ -163,8 +165,9 @@ def esp_to_polish(esp_txt):
 
     org_esp_txt = org_esp_txt.strip()
     pol_txt = pol_txt.strip()
-    
+
     return [org_esp_txt, pol_txt]
+
 
 if __name__ == "__main__":
     if (len(sys.argv) < 4):
@@ -190,4 +193,3 @@ if __name__ == "__main__":
         googletts.speak(pol_txt, voicename, "output.mp3")
 
         # playsound("output.mp3")
-
