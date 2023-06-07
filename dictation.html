@@ -9,30 +9,65 @@
 
 <body>
     <h1>Voice Input</h1>
-    <label for="voice">Select a voice:</label>
-    <select id="voice" name="voice">
-        <option value="ludoviko">ludoviko</option>
-        <option value="male1">Male 1</option>
-        <option value="male2">Male 2</option>
-        <option value="male3">Male 3</option>
-        <option value="female1">Female 1</option>
-        <option value="female2">Female 2</option>
-        <option value="female3">Female 3</option>
-    </select>
-    <br><br>
-    <label for="eo">Eo:</label>
-    <textarea id="eo" name="eo" rows="3" cols="30"></textarea>
-    <br><br>
-    <button onclick="speak('eo')">Speak</button>
-    <br><br>
-    <label for="pl">Pl:</label>
-    <textarea id="pl" name="pl" rows="3" cols="30"></textarea>
-    <br><br>
-    <button onclick="speak('pl')">Speak</button>
-    <button onclick="remember()">Remember</button>
-    <button onclick="remember_all()">Remember All</button>
-    <button onclick="remove_all()">Remove All</button>
-    <br><br>
+    <table>
+        <tr>
+            <td>
+                <label for="voice">Select a voice:</label>
+            </td>
+            <td>
+                <select id="voice" name="voice">
+                    <option value="ludoviko">ludoviko</option>
+                    <option value="male1">Male 1</option>
+                    <option value="male2">Male 2</option>
+                    <option value="male3">Male 3</option>
+                    <option value="female1">Female 1</option>
+                    <option value="female2">Female 2</option>
+                    <option value="female3">Female 3</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" align="right">
+                <label for="eo-org">File name:</label>
+            </td>
+            <td>
+                <textarea id="eo-org" name="eo-org" rows="3" cols="30"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" align="right">
+                <label for="eo">Eo:</label>
+            </td>
+            <td>
+                <textarea id="eo" name="eo" rows="3" cols="30"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button onclick="speak('eo')">Speak</button>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" align="right">
+                <label for="pl">Pl:</label>
+            </td>
+            <td>
+                <textarea id="pl" name="pl" rows="3" cols="30"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button onclick="speak('pl')">Speak</button>
+                <button onclick="remember()">Remember</button>
+                <button id="remember_all" onclick="remember_all()">Remember All</button>
+                <button onclick="remove_all()">Remove All</button>
+            </td>
+
+        </tr>
+    </table>
+
+
+
     <a id="download-link" href="./output.mp3" download>Download Audio</a>
 
     ą ć ę ł ń ó ś ź ż
@@ -42,6 +77,9 @@
         document.getElementById("voice").onchange = function () {
         }
         function speak(field) {
+            if (document.getElementById("eo-org").value == "" && field == "eo") {
+                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            }
             voice = document.getElementById("voice").value;
             text = document.getElementById(field).value;
             jsonObj = { lang: field, voicename: voice, textdata: text };
@@ -60,19 +98,29 @@
         }
 
         function remember_all() {
+            if (document.getElementById("eo-org").value == "") {
+                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            }
             const eo_txt = document.getElementById("eo").value;
             const pl_txt = document.getElementById("pl").value;
-            jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt };
+            const filename = document.getElementById("eo-org").value;
+            jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, filename: filename };
             strdata = JSON.stringify(jsonObj);
+            document.getElementById("remember_all").disabled = true;
             postAjaxRequest('/tts/remember_all.api', strdata, function (response) {
                 jsonObj = JSON.parse(response);
+                document.getElementById("remember_all").disabled = false;
             }, function (errcode) { });
         }
 
         function remove_all() {
+            if (document.getElementById("eo-org").value == "") {
+                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            }
             const eo_txt = document.getElementById("eo").value;
             const pl_txt = document.getElementById("pl").value;
-            jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt };
+            const filename = document.getElementById("eo-org").value;
+            jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, filename: filename };
             strdata = JSON.stringify(jsonObj);
             postAjaxRequest('/tts/remove_all.api', strdata, function (response) {
                 jsonObj = JSON.parse(response);
@@ -80,10 +128,14 @@
         }
 
         function remember() {
+            if (document.getElementById("eo-org").value == "") {
+                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            }
             const eo_txt = document.getElementById("eo").value;
             const pl_txt = document.getElementById("pl").value;
             const voice = document.getElementById("voice").value;
-            jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, voice_name: voice };
+            const filename = document.getElementById("eo-org").value;
+            jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, voice_name: voice, filename: filename };
             strdata = JSON.stringify(jsonObj);
             postAjaxRequest('/tts/remember.api', strdata, function (response) {
                 jsonObj = JSON.parse(response);
