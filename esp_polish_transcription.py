@@ -67,29 +67,29 @@ def esp_to_polish(esp_txt):
     # 특수문자로 공백으로 분리한 esp_txt
     org_esp_txt = esp_txt
 
-    # esperanto입력 문장을 음절 단위로 분해한다.
-    esp_txt = esp_txt.replace("a", "a-")
+    # esperanto입력 문장을 음절 단위로 분해해서 분리기호 ェ를 끼워넣는다.
+    esp_txt = esp_txt.replace("a", "aェ")
     # esp_txt = esp_txt.replace("A", "A-")
-    esp_txt = esp_txt.replace("e", "e-")
+    esp_txt = esp_txt.replace("e", "eェ")
     # esp_txt = esp_txt.replace("E", "E-")
-    esp_txt = esp_txt.replace("i", "i-")
+    esp_txt = esp_txt.replace("i", "iェ")
     # esp_txt = esp_txt.replace("I", "I-")
-    esp_txt = esp_txt.replace("o", "o-")
+    esp_txt = esp_txt.replace("o", "oェ")
     # esp_txt = esp_txt.replace("O", "O-")
-    esp_txt = esp_txt.replace("u", "u-")
+    esp_txt = esp_txt.replace("u", "uェ")
     # esp_txt = esp_txt.replace("U", "U-")
 
     words = esp_txt.split(" ")
     words2 = []
     for word in words:
         if len(word) >= 2:
-            if word[-2] == '-':
-                word = word[0:-2] + word[-1:]
+            if word[-2] == 'ェ':  # ェ는 분리기호
+                word = word[0:-2] + word[-1:]  # 끝에서 2번째 글자가 분리기호면 이어붙임
                 words2.append(word)
                 continue
         if len(word) >= 1:
-            if word[-1] == '-':
-                word = word[0:-1]
+            if word[-1] == 'ェ':  # ェ는 분리기호
+                word = word[0:-1]  # 마지막 글자가 분리기호면 제거함
         words2.append(word)
 
     esp_txt = " ".join(words2)
@@ -101,7 +101,7 @@ def esp_to_polish(esp_txt):
     esp_txt = esp_txt.replace('ĝ', 'dż')
     esp_txt = esp_txt.replace('ĥ', 'ch')
     esp_txt = esp_txt.replace('j', 'y')
-    esp_txt = esp_txt.replace('i', 'ij')
+    # esp_txt = esp_txt.replace('i', 'ij')
     esp_txt = esp_txt.replace('ĵ', 'rz')
     esp_txt = esp_txt.replace('ŝ', 'sz')
     esp_txt = esp_txt.replace('ŭ', 'ł')
@@ -111,25 +111,26 @@ def esp_to_polish(esp_txt):
     words = esp_txt.split(" ")
     words2 = []
     for word in words:
-        sylables = word.split('-')
-        if len(sylables) >= 2:
+        sylables = word.split('ェ')  # 분리기호 단위로 어절을 나눈다
+        if len(sylables) >= 2:  # 끝에서 2번째 음절은 장음으로 발음하게 한다.
             sylables[-2] = sylables[-2].replace('a', 'aa')
             sylables[-2] = sylables[-2].replace('e', 'ee')
-            sylables[-2] = sylables[-2].replace('i', 'ii')
+            sylables[-2] = sylables[-2].replace('i', 'ij')
             sylables[-2] = sylables[-2].replace('o', 'oł')
             sylables[-2] = sylables[-2].replace('u', 'uł')
-        word = "-".join(sylables)
+        word = "ェ".join(sylables)  # 분리기호로 다시 음절들을 연결한다
         words2.append(word)
     esp_txt = " ".join(words2)
 
+    # 각 단어별로 분리기호 ェ가 들어있는 것을 모두 제거한다.
     words = esp_txt.split(' ')
     words2 = []
     for word in words:
-        sylables = word.split('-')
-        word = "-".join(sylables[0:-1]) + sylables[-1]
+        sylables = word.split('ェ')  # 분리기호로 어절을 분리한다
+        word = "".join(sylables)
+        # word = "-".join(sylables[0:-1]) + sylables[-1] #끝에서 두번째 음절 앞에만 마이너스기호로 띄어쓴다
         words2.append(word)
     esp_txt = " ".join(words2)
-    # esp_txt = "-".join(words[0:-1]) + words[-1]
 
     # 여기에서 온 갓 종류의 예외 처리를 수행한다
     # ok > ohk 등으로 바꾼다
@@ -139,6 +140,12 @@ def esp_to_polish(esp_txt):
     for i, esp_word in enumerate(esp_words):
         if esp_word in exception_pol:
             pol_words[i] = exception_pol[esp_word]
+
+        # 폴란드에서 끝에 n을 ng로 발음하는 경향이 있음.
+        if len(pol_words[i]) >= 2 and pol_words[i][-2:] == "nn":  # 이미 ..nn 이면 그대로 두고
+            continue
+        elif pol_words[i][-1:] == "n":  # 끝에 n으로 끝나면 n을 하나 더 붙여준다
+            pol_words[i] += "n"
         # if esp_word in exception.overrides:
         #     pol_words[i] = exception.overrides[esp_word]
     pol_txt = " ".join(pol_words)

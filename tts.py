@@ -149,6 +149,8 @@ def remember_all():
         mp3_file = "../memlingo/sounds/"+voice+'/'+filename+'.mp3'
         if os.path.exists("./output.mp3"):
             print("mp3_file:"+mp3_file)
+            if os.path.exists(mp3_file):
+                os.remove(mp3_file)
             shutil.move("./output.mp3", mp3_file)
 
     result = {'resp': 'OK', 'message': 'remeber_all.api sucessfully'}
