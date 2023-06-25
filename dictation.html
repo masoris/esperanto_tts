@@ -5,90 +5,180 @@
     <meta charset="utf-8">
     <title>Voice Input</title>
     <script src="./ajax.js?version3.0"></script>
+    <script src="A_course.js"></script>
+    <script src="B_course.js"></script>
+    <script src="C_course.js"></script>
 </head>
 
 <body>
-    <h1>Voice Input</h1>
     <table>
         <tr>
-            <td>
-                <label for="voice">Select a voice:</label>
-            </td>
-            <td>
-                <select id="voice" name="voice">
-                    <option value="male1">Male 1</option>
-                    <option value="male2">Male 2</option>
-                    <option value="male3">Male 3</option>
-                    <option value="female1">Female 1</option>
-                    <option value="female2">Female 2</option>
-                    <option value="female3">Female 3</option>
-                    <option value="ludoviko">ludoviko</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td valign="top" align="right">
-                <label for="eo-org">File name:</label>
-            </td>
-            <td>
-                <textarea id="eo-org" name="eo-org" rows="3" cols="30"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td valign="top" align="right">
-                <label for="eo">Eo:</label>
-            </td>
-            <td>
-                <textarea id="eo" name="eo" rows="3" cols="30"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button onclick="speak('eo')">Speak</button>
-            </td>
-        </tr>
-        <tr>
-            <td valign="top" align="right">
-                <label for="pl">Pl:</label>
-            </td>
-            <td>
-                <textarea id="pl" name="pl" rows="3" cols="30"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button onclick="speak('pl')">Speak</button>
-                <button onclick="remember()">Remember</button>
-                <button id="remember_all" onclick="remember_all()">Remember All</button>
-                <button onclick="remove_all()">Remove All</button>
-            </td>
+            <td valign="top">
+                <h1>Voice Input</h1>
+                <table>
+                    <tr>
+                        <td>
+                            <label for="voice">Select a voice:</label>
+                        </td>
+                        <td>
+                            <select id="voice" name="voice">
+                                <option value="male1">Male 1</option>
+                                <option value="male2">Male 2</option>
+                                <option value="male3">Male 3</option>
+                                <option value="female1">Female 1</option>
+                                <option value="female2">Female 2</option>
+                                <option value="female3">Female 3</option>
+                                <option value="ludoviko">ludoviko</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" align="right">
+                            <label for="eo-org">File name:</label>
+                        </td>
+                        <td>
+                            <textarea id="eo-org" name="eo-org" rows="3" cols="30"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" align="right">
+                            <label for="eo">Eo:</label>
+                        </td>
+                        <td>
+                            <textarea id="eo" name="eo" rows="3" cols="30"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button onclick="speak('eo')">Speak</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" align="right">
+                            <label for="pl">Pl:</label>
+                        </td>
+                        <td>
+                            <textarea id="pl" name="pl" rows="3" cols="30"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button onclick="speak('pl')">Speak</button>
+                            <button onclick="remember()">Remember</button>
+                            <button id="remember_all" onclick="remember_all()">Remember All</button>
+                            <button onclick="remove_all()">Remove All</button>
+                        </td>
 
+                    </tr>
+                </table>
+                <a id="download-link" href="./output.mp3" download>Download Audio</a>
+                ą ć ę ł ń ó ś ź ż
+            </td>
+            <td valign="top">
+                <input id="A_course" type="button" value="A_course">
+                <input id="B_course" type="button" value="B_course">
+                <input id="C_course" type="button" value="C_course">
+                <br><span id="contents">contents</span>
+            </td>
         </tr>
     </table>
 
-
-
-    <a id="download-link" href="./output.mp3" download>Download Audio</a>
-
-    ą ć ę ł ń ó ś ź ż
-
-
     <script>
-        document.getElementById("voice").onchange = function () {
+        function $(id) { return document.getElementById(id); }
+
+        function setitem(item) {
+            $("eo").innerText = item.innerText;
+            $("eo-org").innerText = item.innerText;
+
+        }
+
+        var A_page = 0;
+        function prev_A() {
+            if (A_page == 0) { return; }
+            A_page -= 1;
+            display_A();
+        }
+
+        function next_A() {
+            if (A_page * 25 >= A_course.length) { return; }
+            A_page += 1;
+            display_A();
+        }
+
+        function display_A() {
+            $("contents").innerHTML = "page: " + A_page;
+            $("contents").innerHTML += "<br><a onclick='prev_A()'>[prev]</a>";
+            $("contents").innerHTML += " <a onclick='next_A()'>[next]</a>";
+            for (i = (A_page * 25); i < A_course.length && i < ((A_page + 1) * 25); i++) {
+                $("contents").innerHTML += "<br><a onclick='setitem(this)'>" + A_course[i] + "</a>";
+            }
+        }
+
+        $("A_course").onclick = display_A;
+
+        var B_page = 0;
+        function prev_B() {
+            if (B_page == 0) { return; }
+            B_page -= 1;
+            display_B();
+        }
+
+        function next_B() {
+            if (B_page * 25 >= B_course.length) { return; }
+            B_page += 1;
+            display_B();
+        }
+
+        function display_B() {
+            $("contents").innerHTML = "page: " + B_page;
+            $("contents").innerHTML += "<br><a onclick='prev_B()'>[prev]</a>";
+            $("contents").innerHTML += " <a onclick='next_B()'>[next]</a>";
+            for (i = (B_page * 25); i < B_course.length && i < ((B_page + 1) * 25); i++) {
+                $("contents").innerHTML += "<br><a onclick='setitem(this)'>" + B_course[i] + "</a>";
+            }
+        }
+
+        $("B_course").onclick = display_B;
+
+        var C_page = 0;
+        function prev_C() {
+            if (C_page == 0) { return; }
+            C_page -= 1;
+            display_C();
+        }
+
+        function next_C() {
+            if (C_page * 25 >= C_course.length) { return; }
+            C_page += 1;
+            display_C();
+        }
+
+        function display_C() {
+            $("contents").innerHTML = "page: " + C_page;
+            $("contents").innerHTML += "<br><a onclick='prev_C()'>[prev]</a>";
+            $("contents").innerHTML += " <a onclick='next_C()'>[next]</a>";
+            for (i = (C_page * 25); i < C_course.length && i < ((C_page + 1) * 25); i++) {
+                $("contents").innerHTML += "<br><a onclick='setitem(this)'>" + C_course[i] + "</a>";
+            }
+        }
+
+        $("C_course").onclick = display_C;
+
+        $("voice").onchange = function () {
         }
         function speak(field) {
-            if (document.getElementById("eo-org").value == "" && field == "eo") {
-                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            if ($("eo-org").value == "" && field == "eo") {
+                $("eo-org").value = $("eo").value;
             }
-            voice = document.getElementById("voice").value;
-            text = document.getElementById(field).value;
+            voice = $("voice").value;
+            text = $(field).value;
             jsonObj = { lang: field, voicename: voice, textdata: text };
             strdata = JSON.stringify(jsonObj);
             postAjaxRequest('/tts/speak.api', strdata, function (response) {
                 jsonObj = JSON.parse(response);
-                document.getElementById('pl').value = jsonObj.pol_txt;
+                $('pl').value = jsonObj.pol_txt;
                 if (jsonObj.esp_txt != null) {
-                    document.getElementById('eo').value = jsonObj.esp_txt;
+                    $('eo').value = jsonObj.esp_txt;
                 }
                 audio = new Audio();
                 nowInMillis = new Date().getTime();
@@ -98,28 +188,28 @@
         }
 
         function remember_all() {
-            if (document.getElementById("eo-org").value == "") {
-                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            if ($("eo-org").value == "") {
+                $("eo-org").value = $("eo").value;
             }
-            const eo_txt = document.getElementById("eo").value;
-            const pl_txt = document.getElementById("pl").value;
-            const filename = document.getElementById("eo-org").value;
+            const eo_txt = $("eo").value;
+            const pl_txt = $("pl").value;
+            const filename = $("eo-org").value;
             jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, filename: filename };
             strdata = JSON.stringify(jsonObj);
-            document.getElementById("remember_all").disabled = true;
+            $("remember_all").disabled = true;
             postAjaxRequest('/tts/remember_all.api', strdata, function (response) {
                 jsonObj = JSON.parse(response);
-                document.getElementById("remember_all").disabled = false;
+                $("remember_all").disabled = false;
             }, function (errcode) { });
         }
 
         function remove_all() {
-            if (document.getElementById("eo-org").value == "") {
-                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            if ($("eo-org").value == "") {
+                $("eo-org").value = $("eo").value;
             }
-            const eo_txt = document.getElementById("eo").value;
-            const pl_txt = document.getElementById("pl").value;
-            const filename = document.getElementById("eo-org").value;
+            const eo_txt = $("eo").value;
+            const pl_txt = $("pl").value;
+            const filename = $("eo-org").value;
             jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, filename: filename };
             strdata = JSON.stringify(jsonObj);
             postAjaxRequest('/tts/remove_all.api', strdata, function (response) {
@@ -128,13 +218,13 @@
         }
 
         function remember() {
-            if (document.getElementById("eo-org").value == "") {
-                document.getElementById("eo-org").value = document.getElementById("eo").value;
+            if ($("eo-org").value == "") {
+                $("eo-org").value = $("eo").value;
             }
-            const eo_txt = document.getElementById("eo").value;
-            const pl_txt = document.getElementById("pl").value;
-            const voice = document.getElementById("voice").value;
-            const filename = document.getElementById("eo-org").value;
+            const eo_txt = $("eo").value;
+            const pl_txt = $("pl").value;
+            const voice = $("voice").value;
+            const filename = $("eo-org").value;
             jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, voice_name: voice, filename: filename };
             strdata = JSON.stringify(jsonObj);
             postAjaxRequest('/tts/remember.api', strdata, function (response) {
