@@ -92,6 +92,7 @@
 
         }
 
+        var wordlist = [];
         var A_page = 0;
         function prev_A() {
             if (A_page == 0) { return; }
@@ -106,12 +107,15 @@
         }
 
         function display_A() {
+            wordlist = [];
             $("contents").innerHTML = "page: " + A_page;
             $("contents").innerHTML += "<br><a onclick='prev_A()'>[prev]</a>";
             $("contents").innerHTML += " <a onclick='next_A()'>[next]</a>";
             for (i = (A_page * 25); i < A_course.length && i < ((A_page + 1) * 25); i++) {
-                $("contents").innerHTML += "<br><a onclick='setitem(this)'>" + A_course[i] + "</a>";
+                $("contents").innerHTML += "<br><a id='" + A_course[i] + "' onclick='setitem(this)'>" + A_course[i] + "</a><span id='" + A_course[i] + "_span'></span>";
+                wordlist.push(A_course[i]);
             }
+            display_voices(wordlist);
         }
 
         $("A_course").onclick = display_A;
@@ -130,12 +134,15 @@
         }
 
         function display_B() {
+            wordlist = [];
             $("contents").innerHTML = "page: " + B_page;
             $("contents").innerHTML += "<br><a onclick='prev_B()'>[prev]</a>";
             $("contents").innerHTML += " <a onclick='next_B()'>[next]</a>";
             for (i = (B_page * 25); i < B_course.length && i < ((B_page + 1) * 25); i++) {
-                $("contents").innerHTML += "<br><a onclick='setitem(this)'>" + B_course[i] + "</a>";
+                $("contents").innerHTML += "<br><a id='" + B_course[i] + "' onclick='setitem(this)'>" + B_course[i] + "</a><span id='" + B_course[i] + "_span'></span>";
+                wordlist.push(B_course[i]);
             }
+            display_voices(wordlist);
         }
 
         $("B_course").onclick = display_B;
@@ -154,18 +161,39 @@
         }
 
         function display_C() {
+            wordlist = [];
             $("contents").innerHTML = "page: " + C_page;
             $("contents").innerHTML += "<br><a onclick='prev_C()'>[prev]</a>";
             $("contents").innerHTML += " <a onclick='next_C()'>[next]</a>";
             for (i = (C_page * 25); i < C_course.length && i < ((C_page + 1) * 25); i++) {
-                $("contents").innerHTML += "<br><a onclick='setitem(this)'>" + C_course[i] + "</a>";
+                $("contents").innerHTML += "<br><a id='" + C_course[i] + "' onclick='setitem(this)'>" + C_course[i] + "</a><span id='" + C_course[i] + "_span'></span>";
+                wordlist.push(C_course[i]);
             }
+            display_voices(wordlist);
         }
 
         $("C_course").onclick = display_C;
 
+        function display_voices(wordlist) {
+            jsonObj = { wordlist: wordlist };
+            strdata = JSON.stringify(jsonObj);
+            postAjaxRequest('/tts/get_voices.api', strdata, function (response) {
+                jsonObj = JSON.parse(response);
+                word_voice_pairs = jsonObj.word_voice_pairs;
+                console.log(word_voice_pairs);
+                for (word_voice_pair in word_voice_pairs) {
+                    word = word_voice_pair[0];
+                    voice = word_voice_pair[1];
+                    $(word + "_span").innerText += voice + ",";
+                }
+            }, function (errcode) { });
+        }
+
         $("voice").onchange = function () {
         }
+
+
+
         function speak(field) {
             if ($("eo-org").value == "" && field == "eo") {
                 $("eo-org").value = $("eo").value;

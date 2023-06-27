@@ -48,6 +48,28 @@ def speak():
     return resp
 
 
+@app.route('/tts/get_voices.api', methods=['POST'])
+def get_voices():
+    wordlist = request.json['wordlist']
+
+    word_voice_pairs = []
+    voices = ["male1", "male2", "male3", "female1",
+              "female2", "female3", "ludoviko"]
+
+    for word in wordlist:
+        voice_list = ""
+        for voice in voices:
+            if os.path.exists("../memlingo/sounds/"+voice+"/"+word+".mp3"):
+                voice_list += voice + ","
+        word_voice_pair = [word, voice_list]
+        word_voice_pairs.append(word_voice_pair)
+
+    result = {'word_voice_pairs': word_voice_pairs}
+
+    resp = make_response(jsonify(result))
+    return resp
+
+
 @app.route('/tts/remember.api', methods=['POST'])
 def remember():
     esp_txt = request.json['eo_txt']
