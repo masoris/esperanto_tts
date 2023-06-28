@@ -87,11 +87,11 @@
         function $(id) { return document.getElementById(id); }
 
         function setitem(item) {
-            $("eo").innerText = item.innerText;
-            $("eo-org").innerText = item.innerText;
+            $("eo").value = item.innerText;
+            $("eo-org").value = item.innerText;
 
         }
-
+        var page_size = 20;
         var wordlist = [];
         var A_page = 0;
         function prev_A() {
@@ -101,21 +101,21 @@
         }
 
         function next_A() {
-            if (A_page * 25 >= A_course.length) { return; }
+            if (A_page * page_size >= A_course.length) { return; }
             A_page += 1;
             display_A();
         }
 
         function display_A() {
             wordlist = [];
-            $("contents").innerHTML = "page: " + A_page;
+            $("contents").innerHTML = "A_page: " + A_page;
             $("contents").innerHTML += "<br><a onclick='prev_A()'>[prev]</a>";
             $("contents").innerHTML += " <a onclick='next_A()'>[next]</a>";
-            for (i = (A_page * 25); i < A_course.length && i < ((A_page + 1) * 25); i++) {
-                $("contents").innerHTML += "<br><a id='" + A_course[i] + "' onclick='setitem(this)'>" + A_course[i] + "</a><span id='" + A_course[i] + "_span'></span>";
+            for (i = (A_page * page_size); i < A_course.length && i < ((A_page + 1) * page_size); i++) {
+                $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + A_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
                 wordlist.push(A_course[i]);
             }
-            display_voices(wordlist);
+            display_voices(wordlist, "A");
         }
 
         $("A_course").onclick = display_A;
@@ -128,21 +128,21 @@
         }
 
         function next_B() {
-            if (B_page * 25 >= B_course.length) { return; }
+            if (B_page * page_size >= B_course.length) { return; }
             B_page += 1;
             display_B();
         }
 
         function display_B() {
             wordlist = [];
-            $("contents").innerHTML = "page: " + B_page;
+            $("contents").innerHTML = "B_page: " + B_page;
             $("contents").innerHTML += "<br><a onclick='prev_B()'>[prev]</a>";
             $("contents").innerHTML += " <a onclick='next_B()'>[next]</a>";
-            for (i = (B_page * 25); i < B_course.length && i < ((B_page + 1) * 25); i++) {
-                $("contents").innerHTML += "<br><a id='" + B_course[i] + "' onclick='setitem(this)'>" + B_course[i] + "</a><span id='" + B_course[i] + "_span'></span>";
+            for (i = (B_page * page_size); i < B_course.length && i < ((B_page + 1) * page_size); i++) {
+                $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + B_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
                 wordlist.push(B_course[i]);
             }
-            display_voices(wordlist);
+            display_voices(wordlist, "B");
         }
 
         $("B_course").onclick = display_B;
@@ -155,36 +155,54 @@
         }
 
         function next_C() {
-            if (C_page * 25 >= C_course.length) { return; }
+            if (C_page * page_size >= C_course.length) { return; }
             C_page += 1;
             display_C();
         }
 
         function display_C() {
             wordlist = [];
-            $("contents").innerHTML = "page: " + C_page;
+            $("contents").innerHTML = "C_page: " + C_page;
             $("contents").innerHTML += "<br><a onclick='prev_C()'>[prev]</a>";
             $("contents").innerHTML += " <a onclick='next_C()'>[next]</a>";
-            for (i = (C_page * 25); i < C_course.length && i < ((C_page + 1) * 25); i++) {
-                $("contents").innerHTML += "<br><a id='" + C_course[i] + "' onclick='setitem(this)'>" + C_course[i] + "</a><span id='" + C_course[i] + "_span'></span>";
+            for (i = (C_page * page_size); i < C_course.length && i < ((C_page + 1) * page_size); i++) {
+                $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + C_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
                 wordlist.push(C_course[i]);
             }
-            display_voices(wordlist);
+            display_voices(wordlist, "C");
         }
 
         $("C_course").onclick = display_C;
 
-        function display_voices(wordlist) {
+        function display_voices(wordlist, which) {
             jsonObj = { wordlist: wordlist };
             strdata = JSON.stringify(jsonObj);
             postAjaxRequest('/tts/get_voices.api', strdata, function (response) {
                 jsonObj = JSON.parse(response);
                 word_voice_pairs = jsonObj.word_voice_pairs;
-                console.log(word_voice_pairs);
-                for (word_voice_pair in word_voice_pairs) {
+
+                for (word_voice_pair of word_voice_pairs) {
                     word = word_voice_pair[0];
                     voice = word_voice_pair[1];
-                    $(word + "_span").innerText += voice + ",";
+
+                    found_i = -1;
+                    if (which == "C") {
+                        ABC_course = C_course;
+                    }
+                    else if (which == "A") {
+                        ABC_course = A_course;
+                    }
+                    else if (which == "B") {
+                        ABC_course = B_course;
+                    }
+                    for (i = 0; i < ABC_course.length; i++) {
+                        if (word == ABC_course[i]) {
+                            found_i = i;
+                            break;
+                        }
+                    }
+
+                    $(found_i + "_span").innerText += voice;
                 }
             }, function (errcode) { });
         }

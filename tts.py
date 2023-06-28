@@ -3,6 +3,7 @@ import subprocess
 import os
 import sys
 import shutil
+import random
 from esp_polish_transcription import esp_to_polish
 
 app = Flask(__name__)
@@ -11,6 +12,13 @@ app = Flask(__name__)
 @app.route('/tts/<path:path>')
 def serve_tts(path):
     return send_from_directory('.', path)
+
+# favicon.ico 파일 서비스
+
+
+@app.route('/favicon.ico')
+def serve_favicon():
+    return send_from_directory('.', 'favicon.ico')
 
 
 @app.route('/tts/speak.api', methods=['POST'])
@@ -149,15 +157,14 @@ def remember():
 @app.route('/tts/remember_all.api', methods=['POST'])
 def remember_all():
     esp_txt = request.json['eo_txt']
-    pol_txt = request.json['pl_txt']
     filename = request.json['filename']
 
     esp_txt = esp_txt.strip()
-    pol_txt = pol_txt.strip()
     filename = filename.strip()
 
-    voices = ["male1", "male2", "male3", "female1",
-              "female2", "female3", "ludoviko"]
+    male = random.choice(["male1", "male2", "male3"])
+    female = random.choice(["female1", "female2", "female3"])
+    voices = [male, female, "ludoviko"]
     for voice in voices:
         if voice == "ludoviko":
             cmd = ["python3", "esp_polish_transcription.py",
@@ -173,7 +180,11 @@ def remember_all():
             print("mp3_file:"+mp3_file)
             if os.path.exists(mp3_file):
                 os.remove(mp3_file)
-            shutil.move("./output.mp3", mp3_file)
+            # ludoviko는 h가 들어가는 발음을 제대로 못함, 그래서 저장하지 않음
+            if (esp_txt.find("h") >= 0 or esp_txt.find("H") >= 0) and voice == "ludoviko":
+                pass
+            else:
+                shutil.move("./output.mp3", mp3_file)
 
     result = {'resp': 'OK', 'message': 'remeber_all.api sucessfully'}
     resp = make_response(jsonify(result))
