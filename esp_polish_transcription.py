@@ -102,7 +102,7 @@ def esp_to_polish(esp_txt):
     esp_txt = esp_txt.replace('ĥ', 'ch')
     esp_txt = esp_txt.replace('j', 'y')
     # esp_txt = esp_txt.replace('i', 'ij')
-    esp_txt = esp_txt.replace('ĵ', 'rz')
+    esp_txt = esp_txt.replace('ĵ', 'ż')
     esp_txt = esp_txt.replace('ŝ', 'sz')
     esp_txt = esp_txt.replace('ŭ', 'ł')
     esp_txt = esp_txt.replace('v', 'w')
