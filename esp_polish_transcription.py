@@ -4,21 +4,24 @@ import csv
 import re
 # from playsound import playsound
 
-exception_esp = {}
-with open('exception_esp.tsv', newline='', encoding='utf-8') as csvfile:
-    reader = csv.reader(csvfile, delimiter='\t')
-    for row in reader:
-        # if len(row) < 2:
-        #     continue
-        exception_esp[row[0]] = row[1]
 
-exception_pol = {}
-with open('exception_pol.tsv', newline='', encoding='utf-8') as csvfile:
-    reader = csv.reader(csvfile, delimiter='\t')
-    for row in reader:
-        # if len(row) < 2:
-        #     continue
-        exception_pol[row[0]] = row[1]
+def load_exception():
+    exception_esp = {}
+    with open('exception_esp.tsv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile, delimiter='\t')
+        for row in reader:
+            # if len(row) < 2:
+            #     continue
+            exception_esp[row[0]] = row[1]
+
+    exception_pol = {}
+    with open('exception_pol.tsv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile, delimiter='\t')
+        for row in reader:
+            # if len(row) < 2:
+            #     continue
+            exception_pol[row[0]] = row[1]
+    return [exception_esp, exception_pol]
 
 
 def normalize_esp_text(esp_txt):
@@ -55,6 +58,7 @@ def normalize_esp_text(esp_txt):
 
 
 def esp_to_polish(esp_txt):
+    [exception_esp, exception_pol] = load_exception()
     esp_txt = normalize_esp_text(esp_txt)
 
     # 1 > unu, s-ro > sinjoro 등을 바꾼다
@@ -176,6 +180,18 @@ def esp_to_polish(esp_txt):
     return [org_esp_txt, pol_txt]
 
 
+def get_pol_mp3_file(voicename, pol_txt, out_mp3):
+    googletts.speak(pol_txt, voicename, out_mp3)
+
+
+def get_esp_mp3_file(voicename, esp_txt, out_mp3):
+    if voicename == 'ludoviko':
+        googletts.speak(esp_txt, voicename, out_mp3)
+    else:
+        [esp_txt, pol_txt] = esp_to_polish(esp_txt)
+        googletts.speak(pol_txt, voicename, out_mp3)
+
+
 if __name__ == "__main__":
     if (len(sys.argv) < 4):
         print("Usage: %s -e 'esp_txt' 'male1'" % sys.argv[0])
@@ -185,18 +201,18 @@ if __name__ == "__main__":
     if (sys.argv[1] == '-e'):
         esp_txt = sys.argv[2]
         if voicename == 'ludoviko':
-            googletts.speak(esp_txt, voicename, "output.mp3")
+            get_esp_mp3_file(voicename, esp_txt, "output.mp3")
+            # googletts.speak(esp_txt, voicename, "output.mp3")
             [esp_txt, pol_txt] = esp_to_polish(esp_txt)
             print("esp_txt=%s\npol_txt=%s" % (esp_txt, pol_txt))
         else:
             [esp_txt, pol_txt] = esp_to_polish(esp_txt)
             print("esp_txt=%s\npol_txt=%s" % (esp_txt, pol_txt))
-            googletts.speak(pol_txt, voicename, "output.mp3")
+            get_pol_mp3_file(voicename, pol_txt, "output.mp3")
+            # googletts.speak(pol_txt, voicename, "output.mp3")
 
-        # playsound("output.mp3")
     else:
         pol_txt = sys.argv[2]
         print("pol_txt=%s" % (pol_txt))
-        googletts.speak(pol_txt, voicename, "output.mp3")
-
-        # playsound("output.mp3")
+        get_pol_mp3_file(voicename, pol_txt, "output.mp3")
+        # googletts.speak(pol_txt, voicename, "output.mp3")

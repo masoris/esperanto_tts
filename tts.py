@@ -4,7 +4,7 @@ import os
 import sys
 import shutil
 import random
-from esp_polish_transcription import esp_to_polish
+from esp_polish_transcription import esp_to_polish, get_esp_mp3_file, get_pol_mp3_file
 
 app = Flask(__name__)
 
@@ -157,9 +157,11 @@ def remember():
 @app.route('/tts/remember_all.api', methods=['POST'])
 def remember_all():
     esp_txt = request.json['eo_txt']
+    pol_txt = request.json['pl_txt']
     filename = request.json['filename']
 
     esp_txt = esp_txt.strip()
+    pol_txt = pol_txt.strip()
     filename = filename.strip()
 
     male = random.choice(["male1", "male2", "male3"])
@@ -167,12 +169,14 @@ def remember_all():
     voices = [male, female, "ludoviko"]
     for voice in voices:
         if voice == "ludoviko":
-            cmd = ["python3", "esp_polish_transcription.py",
-                   "-e", "%s" % esp_txt, "%s" % voice]
+            get_esp_mp3_file("ludoviko", esp_txt, "output.mp3")
+            # cmd = ["python3", "esp_polish_transcription.py",
+            #        "-e", "%s" % esp_txt, "%s" % voice]
         else:
-            cmd = ["python3", "esp_polish_transcription.py",
-                   "-p", "%s" % esp_txt, "%s" % voice]
-        output = subprocess.run(cmd, stdout=subprocess.PIPE)
+            get_pol_mp3_file(voice, pol_txt, "output.mp3")
+            # cmd = ["python3", "esp_polish_transcription.py",
+            #    "-p", "%s" % pol_txt, "%s" % voice]
+        # output = subprocess.run(cmd, stdout=subprocess.PIPE)
 
         # 2. output.mp3를 ./sound/(voice)/(esp_txt).mp3 로 파일 mv/overwrite하기
         mp3_file = "../memlingo/sounds/"+voice+'/'+filename+'.mp3'
@@ -215,4 +219,4 @@ def remove_all():
     return resp
 
 
-app.run(debug=True, host='192.168.117.129', port=5001)
+app.run(debug=True, host='localhost', port=5001)
