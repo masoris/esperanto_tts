@@ -41,15 +41,16 @@ def normalize_esp_text(esp_txt):
     esp_txt = esp_txt.replace("sx", "ŝ")
     # esp_txt = esp_txt.replace("Sx", "Ŝ")
 
-    esp_txt = esp_txt.replace("!", " !")
-    esp_txt = esp_txt.replace(",", " ,")
-    esp_txt = esp_txt.replace(".", " .")
-    esp_txt = esp_txt.replace("?", " ?")
+    esp_txt = esp_txt.replace("!", " ! ")
+    esp_txt = esp_txt.replace(",", " , ")
+    esp_txt = esp_txt.replace(".", " . ")
+    esp_txt = esp_txt.replace("?", " ? ")
     # esp_txt = esp_txt.replace("~", " ")
-    esp_txt = esp_txt.replace(":", " :")
-    esp_txt = esp_txt.replace(";", " ;")
-    esp_txt = esp_txt.replace("(", " (")
-    esp_txt = esp_txt.replace(")", " )")
+    esp_txt = esp_txt.replace(":", " : ")
+    esp_txt = esp_txt.replace(";", " ; ")
+    esp_txt = esp_txt.replace("(", " ( ")
+    esp_txt = esp_txt.replace(")", " ) ")
+    esp_txt = esp_txt.replace("\"", " \" ")
 
     esp_txt = esp_txt.strip()
     esp_txt = re.sub('\s+', ' ', esp_txt)
@@ -109,7 +110,7 @@ def esp_to_polish(esp_txt):
     esp_txt = esp_txt.replace('ĵ', 'ż')
     esp_txt = esp_txt.replace('ŝ', 'sz')
     esp_txt = esp_txt.replace('ŭ', 'ł')
-    esp_txt = esp_txt.replace('v', 'w')
+    # esp_txt = esp_txt.replace('v', 'w')
 
     # 에스페란토 억양을 반영한다.
     words = esp_txt.split(" ")
@@ -119,7 +120,7 @@ def esp_to_polish(esp_txt):
         if len(sylables) >= 2:  # 끝에서 2번째 음절은 장음으로 발음하게 한다.
             sylables[-2] = sylables[-2].replace('a', 'aa')
             sylables[-2] = sylables[-2].replace('e', 'ee')
-            sylables[-2] = sylables[-2].replace('i', 'ij')
+            sylables[-2] = sylables[-2].replace('i', 'iy')
             sylables[-2] = sylables[-2].replace('o', 'oł')
             sylables[-2] = sylables[-2].replace('u', 'uł')
         word = "ェ".join(sylables)  # 분리기호로 다시 음절들을 연결한다
@@ -163,6 +164,7 @@ def esp_to_polish(esp_txt):
     org_esp_txt = org_esp_txt.replace(" ;", ";")
     org_esp_txt = org_esp_txt.replace(" (", "(")
     org_esp_txt = org_esp_txt.replace(" )", ")")
+    org_esp_txt = org_esp_txt.replace(" \"", "\"")
 
     pol_txt = pol_txt.replace(" !", "!")
     pol_txt = pol_txt.replace(" ,", ",")
@@ -173,6 +175,7 @@ def esp_to_polish(esp_txt):
     pol_txt = pol_txt.replace(" ;", ";")
     pol_txt = pol_txt.replace(" (", "(")
     pol_txt = pol_txt.replace(" )", ")")
+    pol_txt = pol_txt.replace(" \"", "\"")
 
     org_esp_txt = org_esp_txt.strip()
     pol_txt = pol_txt.strip()

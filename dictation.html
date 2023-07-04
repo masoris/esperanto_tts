@@ -201,7 +201,11 @@
                             break;
                         }
                     }
-
+                    if (found_i == -1) {
+                        alert("[" + word + "]");
+                    }
+                    if ($(found_i + "_span") == null) alert(found_i);
+                    // if (word == "bedaŭrinde") alert(voice);
                     $(found_i + "_span").innerText += voice;
                 }
             }, function (errcode) { });

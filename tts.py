@@ -29,10 +29,10 @@ def speak():
 
     if lang == "eo":
         cmd = ["python3", "esp_polish_transcription.py",
-               "-e", "%s" % textdata, "%s" % voicename]
+               "-e", textdata, voicename]
     else:
         cmd = ["python3", "esp_polish_transcription.py",
-               "-p", "%s" % textdata, "%s" % voicename]
+               "-p", textdata, voicename]
     # print(cmd)
     output = subprocess.run(cmd, stdout=subprocess.PIPE)
     # print(output.stdout.decode('utf-8'))
@@ -129,6 +129,7 @@ def remember():
         esp_word = esp_word.replace(";", "")
         esp_word = esp_word.replace("(", "")
         esp_word = esp_word.replace(")", "")
+        esp_word = esp_word.replace("\"", "")
 
         pol_word = pol_word.replace("!", "")
         pol_word = pol_word.replace(",", "")
@@ -139,6 +140,7 @@ def remember():
         pol_word = pol_word.replace(";", "")
         pol_word = pol_word.replace("(", "")
         pol_word = pol_word.replace(")", "")
+        pol_word = pol_word.replace("\"", "")
 
         fileobj = open('exception_pol.tsv', 'a')
         fileobj.write("%s\t%s\n" % (esp_word, pol_word))
