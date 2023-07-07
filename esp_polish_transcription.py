@@ -121,7 +121,7 @@ def esp_to_polish(esp_txt):
             sylables[-2] = sylables[-2].replace('a', 'aa')
             sylables[-2] = sylables[-2].replace('e', 'ee')
             sylables[-2] = sylables[-2].replace('i', 'iy')
-            sylables[-2] = sylables[-2].replace('o', 'oł')
+            # sylables[-2] = sylables[-2].replace('o', 'oł')
             sylables[-2] = sylables[-2].replace('u', 'uł')
         word = "ェ".join(sylables)  # 분리기호로 다시 음절들을 연결한다
         words2.append(word)
