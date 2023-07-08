@@ -118,8 +118,8 @@ def esp_to_polish(esp_txt):
     for word in words:
         sylables = word.split('ェ')  # 분리기호 단위로 어절을 나눈다
         if len(sylables) >= 2:  # 끝에서 2번째 음절은 장음으로 발음하게 한다.
-            sylables[-2] = sylables[-2].replace('a', 'aa')
-            sylables[-2] = sylables[-2].replace('e', 'ee')
+            # sylables[-2] = sylables[-2].replace('a', 'aa')
+            # sylables[-2] = sylables[-2].replace('e', 'ee')
             sylables[-2] = sylables[-2].replace('i', 'iy')
             # sylables[-2] = sylables[-2].replace('o', 'oł')
             sylables[-2] = sylables[-2].replace('u', 'uł')
