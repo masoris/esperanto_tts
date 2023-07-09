@@ -56,14 +56,14 @@ def google_tts_polish(inputtxt, voicename, output_mp3):
         voicename = "pl-PL-Standard-B"
     if voicename == "male2":
         voicename = "pl-PL-Standard-C"
-    if voicename == "male3":
-        voicename = "pl-PL-Wavenet-B"
+    # if voicename == "male3":
+    #     voicename = "pl-PL-Wavenet-B"
     if voicename == "female1":
         voicename = "pl-PL-Standard-A"
     if voicename == "female2":
         voicename = "pl-PL-Standard-D"
-    if voicename == "female3":
-        voicename = "pl-PL-Wavenet-A"
+    # if voicename == "female3":
+    #     voicename = "pl-PL-Wavenet-A"
 
     voice_conf = texttospeech.VoiceSelectionParams(
         language_code="pl-PL",

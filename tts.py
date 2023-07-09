@@ -4,7 +4,7 @@ import os
 import sys
 import shutil
 import random
-from esp_polish_transcription import esp_to_polish, get_esp_mp3_file, get_pol_mp3_file
+from transcription import esp_to_polish, get_esp_mp3_file, get_pol_mp3_file
 
 app = Flask(__name__)
 
@@ -28,10 +28,10 @@ def speak():
     textdata = request.json['textdata']
 
     if lang == "eo":
-        cmd = ["python3", "esp_polish_transcription.py",
+        cmd = ["python3", "transcription.py",
                "-e", textdata, voicename]
     else:
-        cmd = ["python3", "esp_polish_transcription.py",
+        cmd = ["python3", "transcription.py",
                "-p", textdata, voicename]
     # print(cmd)
     output = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -61,8 +61,8 @@ def get_voices():
     wordlist = request.json['wordlist']
 
     word_voice_pairs = []
-    voices = ["male1", "male2", "male3", "female1",
-              "female2", "female3", "ludoviko"]
+    voices = ["male1", "male2", "female1",
+              "female2", "ludoviko"]
 
     for word in wordlist:
         voice_list = ""
@@ -166,17 +166,17 @@ def remember_all():
     pol_txt = pol_txt.strip()
     filename = filename.strip()
 
-    male = random.choice(["male1", "male2", "male3"])
-    female = random.choice(["female1", "female2", "female3"])
+    male = random.choice(["male1", "male2"])
+    female = random.choice(["female1", "female2"])
     voices = [male, female, "ludoviko"]
     for voice in voices:
         if voice == "ludoviko":
             get_esp_mp3_file("ludoviko", esp_txt, "output.mp3")
-            # cmd = ["python3", "esp_polish_transcription.py",
+            # cmd = ["python3", "transcription.py",
             #        "-e", "%s" % esp_txt, "%s" % voice]
         else:
             get_pol_mp3_file(voice, pol_txt, "output.mp3")
-            # cmd = ["python3", "esp_polish_transcription.py",
+            # cmd = ["python3", "transcription.py",
             #    "-p", "%s" % pol_txt, "%s" % voice]
         # output = subprocess.run(cmd, stdout=subprocess.PIPE)
 
@@ -207,8 +207,8 @@ def remove_all():
     pol_txt = pol_txt.strip()
     filename = filename.strip()
 
-    voices = ["male1", "male2", "male3", "female1",
-              "female2", "female3", "ludoviko"]
+    voices = ["male1", "male2", "female1",
+              "female2", "ludoviko"]
     for voice in voices:
 
         # ./sound/(voice)/(esp_txt).mp3의 파일을 삭제하기
