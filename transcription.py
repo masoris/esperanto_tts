@@ -111,6 +111,7 @@ def esp_to_polish(esp_txt):
     esp_txt = esp_txt.replace('ŝ', 'sz')
     esp_txt = esp_txt.replace('ŭ', 'ł')
     # esp_txt = esp_txt.replace('v', 'w')
+    esp_txt = esp_txt.replace('uy', 'ui')
 
     # 에스페란토 억양을 반영한다.
     words = esp_txt.split(" ")
@@ -120,9 +121,10 @@ def esp_to_polish(esp_txt):
         if len(sylables) >= 2:  # 끝에서 2번째 음절은 장음으로 발음하게 한다.
             # sylables[-2] = sylables[-2].replace('a', 'aa')
             # sylables[-2] = sylables[-2].replace('e', 'ee')
-            sylables[-2] = sylables[-2].replace('i', 'iy')
+            # sylables[-2] = sylables[-2].replace('i', 'iy')
             # sylables[-2] = sylables[-2].replace('o', 'oł')
-            sylables[-2] = sylables[-2].replace('u', 'uł')
+            # sylables[-2] = sylables[-2].replace('u', 'uł')
+            pass
         word = "ェ".join(sylables)  # 분리기호로 다시 음절들을 연결한다
         words2.append(word)
     esp_txt = " ".join(words2)
