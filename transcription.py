@@ -145,16 +145,16 @@ def esp_to_polish(esp_txt):
     pol_words = esp_txt.split(" ")
     assert len(esp_words) == len(pol_words), "길이가 다릅니다"
     for i, esp_word in enumerate(esp_words):
-        if esp_word in exception_pol:
-            pol_words[i] = exception_pol[esp_word]
-
         # 폴란드에서 끝에 n을 ng로 발음하는 경향이 있음.
         if len(pol_words[i]) >= 2 and pol_words[i][-2:] == "nn":  # 이미 ..nn 이면 그대로 두고
             continue
         elif pol_words[i][-1:] == "n":  # 끝에 n으로 끝나면 n을 하나 더 붙여준다
             pol_words[i] += "n"
-        # if esp_word in exception.overrides:
-        #     pol_words[i] = exception.overrides[esp_word]
+
+    for i, esp_word in enumerate(esp_words):
+        if esp_word in exception_pol:
+            pol_words[i] = exception_pol[esp_word]
+    
     pol_txt = " ".join(pol_words)
 
     org_esp_txt = org_esp_txt.replace(" !", "!")
