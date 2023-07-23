@@ -166,9 +166,9 @@ def remember_all():
     pol_txt = pol_txt.strip()
     filename = filename.strip()
 
-    male = random.choice(["male1", "male2"])
-    female = random.choice(["female1", "female2"])
-    voices = [male, female, "ludoviko"]
+    # male = random.choice(["male1", "male2"])
+    # female = random.choice(["female1", "female2"])
+    voices = ["male1", "male2", "female1", "female2", "ludoviko"]
     for voice in voices:
         if voice == "ludoviko":
             get_esp_mp3_file("ludoviko", esp_txt, "output.mp3")
@@ -187,10 +187,10 @@ def remember_all():
             if os.path.exists(mp3_file):
                 os.remove(mp3_file)
             # ludoviko는 h가 들어가는 발음을 제대로 못함, 그래서 저장하지 않음
-            if (esp_txt.find("h") >= 0 or esp_txt.find("H") >= 0) and voice == "ludoviko":
-                pass
-            else:
-                shutil.move("./output.mp3", mp3_file)
+            # if (esp_txt.find("h") >= 0 or esp_txt.find("H") >= 0) and voice == "ludoviko":
+            #     pass
+            # else:
+            shutil.move("./output.mp3", mp3_file)
 
     result = {'resp': 'OK', 'message': 'remeber_all.api sucessfully'}
     resp = make_response(jsonify(result))
