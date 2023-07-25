@@ -150,6 +150,12 @@ def esp_to_polish(esp_txt):
             continue
         elif pol_words[i][-1:] == "n":  # 끝에 n으로 끝나면 n을 하나 더 붙여준다
             pol_words[i] += "n"
+        if len(pol_words[i]) >=3 and pol_words[i][-3:] == "ynn":
+            pol_words[i] = pol_words[i][:-3] + "jn"
+        if len(pol_words[i]) >=2 and pol_words[i][-2:] == "uy":
+            pol_words[i] = pol_words[i][:-2] + "uj"
+        if len(pol_words[i]) >=2 and pol_words[i][-2:] == "ay":
+            pol_words[i] = pol_words[i][:-2] + "aj"           
 
     for i, esp_word in enumerate(esp_words):
         if esp_word in exception_pol:
