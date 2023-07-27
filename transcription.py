@@ -156,6 +156,10 @@ def esp_to_polish(esp_txt):
             pol_words[i] = pol_words[i][:-2] + "uj"
         if len(pol_words[i]) >=2 and pol_words[i][-2:] == "ay":
             pol_words[i] = pol_words[i][:-2] + "aj"           
+        if len(pol_words[i]) >=2 and pol_words[i][-2:] == "io":
+            pol_words[i] = pol_words[i][:-2] + "iyo"  
+        if len(pol_words[i]) >=2 and pol_words[i][-2:] == "ia":
+            pol_words[i] = pol_words[i][:-2] + "iya"         
 
     for i, esp_word in enumerate(esp_words):
         if esp_word in exception_pol:
