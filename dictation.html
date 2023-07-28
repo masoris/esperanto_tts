@@ -48,7 +48,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <button onclick="speak('eo')">Speak</button>
+                            <button id="speak_eo" onclick="speak('eo')">Speak</button> <button id="speak_remeber_all"
+                                onclick="speak_remember_all('eo')">Speak, Remeber All</button>
                         </td>
                     </tr>
                     <tr>
@@ -61,7 +62,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <button onclick="speak('pl')">Speak</button>
+                            <button id="speak_pl" onclick="speak('pl')">Speak</button>
                             <button onclick="remember()">Remember</button>
                             <button id="remember_all" onclick="remember_all()">Remember All</button>
                             <button onclick="remove_all()">Remove All</button>
@@ -152,9 +153,14 @@
             display_C();
         }
 
-        function next_C() {
+        function next_C(page) {
             if (C_page * page_size >= C_course.length) { return; }
-            C_page += 1;
+            if (page == -1) {
+                C_page += 1;
+            }
+            else {
+                C_page = page;
+            }
             display_C();
         }
 
@@ -162,7 +168,10 @@
             wordlist = [];
             $("contents").innerHTML = "C_page: " + C_page;
             $("contents").innerHTML += "<br><a onclick='prev_C()'>[prev]</a>";
-            $("contents").innerHTML += " <a onclick='next_C()'>[next]</a>";
+            $("contents").innerHTML += " <a onclick='next_C(-1)'>[next]</a>";
+            for (page = 0; page * page_size * 3 < C_course.length; page++) {
+                $("contents").innerHTML += " <a onclick='next_C(" + (page * 3) + ")'>[" + (page * 3) + "]</a>";
+            }
             for (i = (C_page * page_size); i < C_course.length && i < ((C_page + 1) * page_size); i++) {
                 $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + C_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
                 wordlist.push(C_course[i]);
@@ -212,7 +221,10 @@
         $("voice").onchange = function () {
         }
 
-
+        function speak_remember_all(field) {
+            speak(field);
+            remember_all();
+        }
 
         function speak(field) {
             if ($("eo-org").value == "" && field == "eo") {
@@ -245,9 +257,15 @@
             jsonObj = { eo_txt: eo_txt, pl_txt: pl_txt, filename: filename };
             strdata = JSON.stringify(jsonObj);
             $("remember_all").disabled = true;
+            $("speak_eo").disabled = true;
+            $("speak_pl").disabled = true;
+            $("speak_remeber_all").disabled = true;
             postAjaxRequest('/tts/remember_all.api', strdata, function (response) {
                 jsonObj = JSON.parse(response);
                 $("remember_all").disabled = false;
+                $("speak_eo").disabled = false;
+                $("speak_pl").disabled = false;
+                $("speak_remeber_all").disabled = false;
             }, function (errcode) { });
         }
 

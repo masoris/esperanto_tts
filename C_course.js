@@ -1805,7 +1805,7 @@ C_course = [
     "katedralo",
     "somera solstico",
     "vintra solstico",
-    "ferio(-a tago)",
+    "ferio (feria tago)",
     "ferioj",
     "someraj ferioj",
     "vintraj ferioj",
