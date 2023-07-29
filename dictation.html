@@ -88,6 +88,7 @@
         function setitem(item) {
             $("eo").value = item.innerText;
             $("eo-org").value = item.innerText;
+            speak_remember_all('eo');
 
         }
         var page_size = 20;
@@ -222,11 +223,10 @@
         }
 
         function speak_remember_all(field) {
-            speak(field);
-            remember_all();
+            speak(field, remember_all);
         }
 
-        function speak(field) {
+        function speak(field, callback = null) {
             if ($("eo-org").value == "" && field == "eo") {
                 $("eo-org").value = $("eo").value;
             }
@@ -241,6 +241,12 @@
                     $('eo').value = jsonObj.esp_txt;
                 }
                 audio = new Audio();
+                audio.addEventListener('ended', function () {
+                    if (callback != null) {
+                        // alert("callback");
+                        callback();
+                    }
+                });
                 nowInMillis = new Date().getTime();
                 audio.src = './output.mp3?' + nowInMillis;
                 audio.play();
