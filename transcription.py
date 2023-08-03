@@ -164,7 +164,8 @@ def esp_to_polish(esp_txt):
             pol_words[i] = pol_words[i][:-2] + "iyi" 
 
         pol_words[i] = pol_words[i].replace("sts","sc")
-        pol_words[i] = pol_words[i].replace("kv","kw")          
+        pol_words[i] = pol_words[i].replace("kv","kw")  
+        pol_words[i] = pol_words[i].replace("kts","kc")          
 
     for i, esp_word in enumerate(esp_words):
         if esp_word in exception_pol:
