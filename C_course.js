@@ -5008,7 +5008,7 @@ C_course = [
     "stenografi",
     "mandareno",
     "libano",
-    "manufakuturo",
+    "manufakturo",
     "mediumo",
     "sekcio",
     "metempsikozo",
