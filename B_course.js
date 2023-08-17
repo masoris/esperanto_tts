@@ -554,7 +554,7 @@ B_course = [
     'en ĝi, vi trovos ŝildojn pri ĉiuj ejoj de IJK',
     'mi sendos mesaĝon per poŝtelefono',
     'se mi ne trovos',
-    'ha, bona ideo ĝis tie!',
+    'ha, bona ideo, ĝis tie!',
     'en la prelegejo',
     'gardanĝeloj? ĉu vi ŝercas?',
     'prezidanto de TEJO',
