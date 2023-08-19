@@ -5529,7 +5529,6 @@ C_course = [
     "frenezulo",
     "frizistino",
     "frizosalono",
-    "fromaĵo",
     "funebrulo",
     "galaksio",
     "galerio",
