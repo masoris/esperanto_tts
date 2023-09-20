@@ -8,6 +8,7 @@
     <script src="A_course.js"></script>
     <script src="B_course.js"></script>
     <script src="C_course.js"></script>
+    <script src="L_course.js"></script>
 </head>
 
 <body>
@@ -77,6 +78,7 @@
                 <input id="A_course" type="button" value="A_course">
                 <input id="B_course" type="button" value="B_course">
                 <input id="C_course" type="button" value="C_course">
+                <input id="L_course" type="button" value="L_course">
                 <br><span id="contents">contents</span>
             </td>
         </tr>
@@ -93,6 +95,36 @@
         }
         var page_size = 20;
         var wordlist = [];
+
+
+        var L_page = 0;
+        function prev_L() {
+            if (L_page == 0) { return; }
+            L_page -= 1;
+            display_L();
+        }
+
+        function next_L() {
+            if (L_page * page_size >= L_course.length) { return; }
+            L_page += 1;
+            display_L();
+        }
+
+        function display_L() {
+            wordlist = [];
+            $("contents").innerHTML = "L_page: " + L_page;
+            $("contents").innerHTML += "<br><a onclick='prev_L()'>[prev]</a>";
+            $("contents").innerHTML += " <a onclick='next_L()'>[next]</a>";
+            for (i = (L_page * page_size); i < L_course.length && i < ((L_page + 1) * page_size); i++) {
+                $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + L_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
+                wordlist.push(L_course[i]);
+            }
+            display_voices(wordlist, "L");
+        }
+
+        $("L_course").onclick = display_L;
+
+
         var A_page = 0;
         function prev_A() {
             if (A_page == 0) { return; }
@@ -202,6 +234,9 @@
                     }
                     else if (which == "B") {
                         ABC_course = B_course;
+                    }
+                    else if (which == "L") {
+                        ABC_course = L_course;
                     }
                     for (i = 0; i < ABC_course.length; i++) {
                         if (word == ABC_course[i]) {
