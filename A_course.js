@@ -299,6 +299,7 @@ A_course = [
     'volis legi denove',
     'faris, fariĝis',
     'rapide fariĝis ruĝa',
+    'en ĉambro, en ĉambron',
     'staris kaj sidis',
     'tie staris antaŭ la foto',
     'mi havas tion',
