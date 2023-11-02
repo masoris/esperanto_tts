@@ -224,4 +224,4 @@ def remove_all():
     return resp
 
 
-app.run(debug=True, host='localhost', port=5001)
+# app.run(debug=True, host='localhost', port=5001)

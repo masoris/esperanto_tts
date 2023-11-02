@@ -9,6 +9,8 @@
     <script src="B_course.js"></script>
     <script src="C_course.js"></script>
     <script src="L_course.js"></script>
+    <script src="H_course.js"></script>
+    <script src="K_course.js"></script>
 </head>
 
 <body>
@@ -79,6 +81,8 @@
                 <input id="B_course" type="button" value="B_course">
                 <input id="C_course" type="button" value="C_course">
                 <input id="L_course" type="button" value="L_course">
+                <input id="H_course" type="button" value="H_course">
+                <input id="K_course" type="button" value="K_course">
                 <br><span id="contents">contents</span>
             </td>
         </tr>
@@ -123,6 +127,63 @@
         }
 
         $("L_course").onclick = display_L;
+
+
+        var K_page = 0;
+        function prev_K() {
+            if (K_page == 0) { return; }
+            K_page -= 1;
+            display_K();
+        }
+
+        function next_K() {
+            if (K_page * page_size >= K_course.length) { return; }
+            K_page += 1;
+            display_K();
+        }
+
+        function display_K() {
+            wordlist = [];
+            $("contents").innerHTML = "K_page: " + K_page;
+            $("contents").innerHTML += "<br><a onclick='prev_K()'>[prev]</a>";
+            $("contents").innerHTML += " <a onclick='next_K()'>[next]</a>";
+            for (i = (K_page * page_size); i < K_course.length && i < ((K_page + 1) * page_size); i++) {
+                $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + K_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
+                wordlist.push(K_course[i]);
+            }
+            display_voices(wordlist, "K");
+        }
+
+        $("K_course").onclick = display_K;
+
+
+
+        var H_page = 0;
+        function prev_H() {
+            if (H_page == 0) { return; }
+            H_page -= 1;
+            display_H();
+        }
+
+        function next_H() {
+            if (H_page * page_size >= H_course.length) { return; }
+            H_page += 1;
+            display_H();
+        }
+
+        function display_H() {
+            wordlist = [];
+            $("contents").innerHTML = "H_page: " + H_page;
+            $("contents").innerHTML += "<br><a onclick='prev_H()'>[prev]</a>";
+            $("contents").innerHTML += " <a onclick='next_H()'>[next]</a>";
+            for (i = (H_page * page_size); i < H_course.length && i < ((H_page + 1) * page_size); i++) {
+                $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + H_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
+                wordlist.push(H_course[i]);
+            }
+            display_voices(wordlist, "H");
+        }
+
+        $("H_course").onclick = display_H;
 
 
         var A_page = 0;
@@ -237,6 +298,12 @@
                     }
                     else if (which == "L") {
                         ABC_course = L_course;
+                    }
+                    else if (which == "H") {
+                        ABC_course = H_course;
+                    }
+                    else if (which == "K") {
+                        ABC_course = K_course;
                     }
                     for (i = 0; i < ABC_course.length; i++) {
                         if (word == ABC_course[i]) {
