@@ -41,6 +41,8 @@ def vocalwave_tts_esperanto(esp_txt, voicename, output_mp3):
 def google_tts_polish(inputtxt, voicename, output_mp3):
     # 폴란드어 음성에서 ~를 틸다라고 발음하지 않도록 막는다.
     inputtxt = inputtxt.replace("~", "")
+    inputtxt = inputtxt.replace("?", " ?")
+    inputtxt = inputtxt.replace("!", " !")
     # 인증 정보 설정
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "my-project-tts-383606-c4e8939e2840.json"
 
