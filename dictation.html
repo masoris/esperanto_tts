@@ -11,6 +11,7 @@
     <script src="L_course.js"></script>
     <script src="H_course.js"></script>
     <script src="K_course.js"></script>
+    <script src="VZ_course.js"></script>
 </head>
 
 <body>
@@ -80,9 +81,10 @@
                 <input id="A_course" type="button" value="A_course">
                 <input id="B_course" type="button" value="B_course">
                 <input id="C_course" type="button" value="C_course">
-                <input id="L_course" type="button" value="L_course">
+                <input id="L_course" type="button" value="L_course"><br>
                 <input id="H_course" type="button" value="H_course">
                 <input id="K_course" type="button" value="K_course">
+                <input id="VZ_course" type="button" value="VZ_course">
                 <br><span id="contents">contents</span>
             </td>
         </tr>
@@ -184,6 +186,39 @@
         }
 
         $("H_course").onclick = display_H;
+
+
+
+
+        var VZ_page = 0;
+        function prev_VZ() {
+            if (VZ_page == 0) { return; }
+            VZ_page -= 1;
+            display_VZ();
+        }
+
+        function next_VZ() {
+            if (VZ_page * page_size >= VZ_course.length) { return; }
+            VZ_page += 1;
+            display_VZ();
+        }
+
+        function display_VZ() {
+            wordlist = [];
+            $("contents").innerHTML = "VZ_page: " + VZ_page;
+            $("contents").innerHTML += "<br><a onclick='prev_VZ()'>[prev]</a>";
+            $("contents").innerHTML += " <a onclick='next_VZ()'>[next]</a>";
+            for (i = (VZ_page * page_size); i < VZ_course.length && i < ((VZ_page + 1) * page_size); i++) {
+                $("contents").innerHTML += "<br><a id='" + i + "' onclick='setitem(this)'>" + VZ_course[i] + "</a><br>&nbsp;<font size='-2'><span id='" + i + "_span'></span></font>";
+                wordlist.push(VZ_course[i]);
+            }
+            display_voices(wordlist, "VZ");
+        }
+
+        $("VZ_course").onclick = display_VZ;
+
+
+
 
 
         var A_page = 0;
@@ -304,6 +339,9 @@
                     }
                     else if (which == "K") {
                         ABC_course = K_course;
+                    }
+                    else if (which == "VZ") {
+                        ABC_course = VZ_course;
                     }
                     for (i = 0; i < ABC_course.length; i++) {
                         if (word == ABC_course[i]) {
