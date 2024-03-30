@@ -1,9 +1,9 @@
 
-import sys, json, ttsx, transcription
+import sys, json, tts, transcription
 
 def remember_all(esp_txt):
     [eo_txt, pol_txt] = transcription.esp_to_polish(esp_txt)
-    ttsx.remember_all_args(esp_txt, pol_txt, esp_txt)
+    tts.remember_all_args(esp_txt, pol_txt, esp_txt)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

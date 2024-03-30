@@ -4,6 +4,7 @@ import os
 import sys
 import shutil
 import random
+import nombro
 from transcription import esp_to_polish, get_esp_mp3_file, get_pol_mp3_file
 
 app = Flask(__name__)
@@ -223,5 +224,5 @@ def remove_all():
     resp = make_response(jsonify(result))
     return resp
 
-
-app.run(debug=True, host='localhost', port=5001)
+if __name__ == "__main__":
+    app.run(debug=True, host='localhost', port=5001)

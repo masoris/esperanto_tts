@@ -2,6 +2,7 @@ import googletts
 import sys
 import csv
 import re
+import nombro
 # from playsound import playsound
 
 
@@ -204,6 +205,7 @@ def esp_to_polish(esp_txt):
 
 
 def get_pol_mp3_file(voicename, pol_txt, out_mp3):
+    pol_txt = nombro.number_to_words_with_text(pol_txt)
     googletts.speak(pol_txt, voicename, out_mp3)
 
 
@@ -212,6 +214,7 @@ def get_esp_mp3_file(voicename, esp_txt, out_mp3):
         googletts.speak(esp_txt, voicename, out_mp3)
     else:
         [esp_txt, pol_txt] = esp_to_polish(esp_txt)
+        pol_txt = nombro.number_to_words_with_text(pol_txt)
         googletts.speak(pol_txt, voicename, out_mp3)
 
 
